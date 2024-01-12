@@ -1,15 +1,26 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
+
+from .filters import AdvertisementFilter
+from .permissions import IsOwner
+from .serializers import AdvertisementSerializer
+from .models import Advertisement
 
 
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
-
-    # TODO: настройте ViewSet, укажите атрибуты для кверисета,
-    #   сериализаторов и фильтров
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['status']
+    filter_class = [AdvertisementFilter]
 
     def get_permissions(self):
         """Получение прав для действий."""
-        if self.action in ["create", "update", "partial_update"]:
+        if self.action == "create":
             return [IsAuthenticated()]
+        if self.action in ["update", "partial_update", "destroy"]:
+            return [IsOwner()]
         return []
