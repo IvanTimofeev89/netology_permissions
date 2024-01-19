@@ -6,6 +6,7 @@ class AdvertisementFilter(filters.FilterSet):
     """Фильтры для объявлений."""
 
     created_at = filters.DateFromToRangeFilter()
+    status = filters.CharFilter()
 
     class Meta:
         model = Advertisement
