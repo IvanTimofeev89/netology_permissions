@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -8,14 +9,13 @@ from .permissions import IsOwner
 from .serializers import AdvertisementSerializer
 from .models import Advertisement
 
-
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['status']
-    filter_class = [AdvertisementFilter]
+    filter_class = AdvertisementFilter
 
     def get_permissions(self):
         """Получение прав для действий."""
