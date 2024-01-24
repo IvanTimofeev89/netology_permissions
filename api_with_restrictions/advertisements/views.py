@@ -15,7 +15,7 @@ class AdvertisementViewSet(ModelViewSet):
     serializer_class = AdvertisementSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['status']
-    filter_class = AdvertisementFilter
+    filterset_class = AdvertisementFilter
 
     def get_permissions(self):
         """Получение прав для действий."""
